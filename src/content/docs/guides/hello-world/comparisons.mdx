@@ -3,3 +3,69 @@ title: Comparisons
 sidebar:
   order: 2
 ---
+
+There are a multitude of ways to build web applications, each with its strengths and weaknesses.
+
+In this page, we compare Mighty to other similar solutions, showcasing different tradeoffs depending on your usecase.
+
+This isn't necessarily a "Mighty vs. X" situation; as you will see, some of these solutions can actually be paired with Mighty to improve developer experience!
+
+## Astro as a full-stack framework
+
+Let's first address the elephant in the room: why not _just use Astro_?
+
+WIP
+
+* Limited to JS/TS backends
+* Limited to Astro's structure (file-based routing, middleware, etc.)
+* Must design API or use other libraries (e.g. tRPC) to interface with other backends
+
+## Inertia.js
+
+WIP
+
+* Inertia.js was a big inspiration for Mighty!
+* Inertia.js is for building SPAs (even when using SSR) while Mighty is for building MPAs
+  * Mighty will support an SPA mode in the future
+* Mighty is more deeply integrated with the backend through extensible adapters
+
+## Laravel-specific solutions
+
+### Blade
+
+WIP
+
+* Both can be used to build MPAs
+* Astro's DX and the JS ecosystem is unmatched when it comes to frontend
+* That being said, you can use Mighty with Blade and render Astro components inside of Blade pages!
+  * (TODO: support this on launch?)
+
+
+### Livewire
+
+WIP
+
+* Livewire is for building backend-driven web apps (with SPA-like navigation support) while Mighty is for building MPAs
+* Astro's DX and the JS ecosystem is unmatched when it comes to frontend
+* Livewire is Blade, so you can use Mighty with Livewire
+* Livewire support inside of Astro components is planned
+
+
+### Mingle.js
+
+WIP
+
+* You can use Mighty to do the same thing, now with more frameworks than just React and Vue
+* Mingle.js support for Livewire is great
+* Livewire support inside of Astro components is planned
+
+
+### Hybridly
+
+TODO
+
+## Hono-specific solutions
+
+### HonoX
+
+TODO
