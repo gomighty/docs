@@ -14,11 +14,11 @@ This isn't necessarily a "Mighty vs. X" situation; as you will see, some of thes
 
 ## Astro itself
 
-Let's first address the elephant in the room: why not _just use Astro_?
+Let's first address the elephant in the room: why not **_just use Astro_**?
 
 While Astro prerenders all pages by default, it can be configured to render pages on-demand on the server, making it a full-stack framework.
 
-Astro's DX is fantastic, and depending on your use case, you might just want to build your backend on top of it.
+Astro's developer experience is fantastic, and depending on your use case, you might just want to build your backend on top of it.
 
 However, there are some limitations in Astro's model:
 
@@ -42,7 +42,7 @@ There are some important differences between the two projects:
 - Inertia.js supports [a wide range of backends](https://inertiajs.com/community-adapters), while Mighty currently has official support for Laravel and Hono (for now!).
 - Given its MPA nature, Mighty is more deeply integrated with the backend, letting you use backend context (e.g. user info) on the Astro side.
 
-Depending on your use case, you might opt for Inertia.js to build an interaction-rich SPA app!
+Depending on your requirements, you might opt for Inertia.js to build an interaction-rich SPA app!
 
 You might want to consider Mighty if your app doesn't require fine-grained interactions everywhere, or if you prefer to avoid having a UI framework take over your entire page.
 
@@ -57,10 +57,13 @@ Mighty will eventually aim to be a drop-in replacement for Inertia.js, with deep
 
 ### Blade
 
-- Both can be used to build MPAs
-- Astro's DX and the JS ecosystem is unmatched when it comes to frontend
-- That being said, you can use Mighty with Blade and render Astro components inside of Blade pages!
-  - (TODO: support this on launch?)
+[Blade](https://laravel.com/docs/12.x/blade) is Laravel's built-in, battle-tested, and feature-rich templating engine.
+
+Blade is similar to Astro as it is mainly used to build MPAs, and it can perfectly meet your needs, especially when coupled with a light Javascript library like [Alpine.js](https://alpinejs.dev/).
+
+On the other hand, if you want both Astro's unmatched developer experience on the frontend and Laravel's batteries-included approach, Mighty helps bridge the gap between them.
+
+Mighty can also be used **_alongside_** Blade, with the abiity to render Astro components inside of your Blade views.
 
 ### Livewire
 
