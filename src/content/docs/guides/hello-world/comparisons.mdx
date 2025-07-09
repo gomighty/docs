@@ -4,68 +4,108 @@ sidebar:
   order: 2
 ---
 
+import { Aside } from "@astrojs/starlight/components";
+
 There are a multitude of ways to build web applications, each with its strengths and weaknesses.
 
-In this page, we compare Mighty to other similar solutions, showcasing different tradeoffs depending on your usecase.
+In this page, we compare Mighty to other similar solutions, showcasing different tradeoffs depending on your use case.
 
 This isn't necessarily a "Mighty vs. X" situation; as you will see, some of these solutions can actually be paired with Mighty to improve developer experience!
 
-## Astro as a full-stack framework
+## Astro itself
 
 Let's first address the elephant in the room: why not _just use Astro_?
 
-WIP
+While Astro prerenders all pages by default, it can be configured to render pages on-demand on the server, making it a full-stack framework.
 
-* Limited to JS/TS backends
-* Limited to Astro's structure (file-based routing, middleware, etc.)
-* Must design API or use other libraries (e.g. tRPC) to interface with other backends
+Astro's DX is fantastic, and depending on your use case, you might just want to build your backend on top of it.
+
+However, there are some limitations in Astro's model:
+
+- Astro is limited to building JavaScript/TypeScript backends, as it is a JavaScript framework.
+- To use a backend built in another language, you'll have to build an API to interface with your Astro application.
+- You're also bound to Astro's project structure, and all its decisions regarding file-based routing, middleware design, etc.
+
+Of course, these limitations might not matter if your use case fits Astro's model, in which case you might not need Mighty!
+
+But if the above sounds like a dealbreaker, or if you want the freedom to use any backend without fussing around with APIs, Mighty might just fit the bill.
 
 ## Inertia.js
 
-WIP
+[Inertia.js](https://inertiajs.com/) allows you to build a modern Single-Page App (SPA) on top of your backend, without having to implement APIs or client-side routing.
 
-* Inertia.js was a big inspiration for Mighty!
-* Inertia.js is for building SPAs (even when using SSR) while Mighty is for building MPAs
-  * Mighty will support an SPA mode in the future
-* Mighty is more deeply integrated with the backend through extensible adapters
+In this sense, it's very similar to what Mighty is trying to do, and Inertia.js is in fact a big inspiration for Mighty!
+
+There are some important differences between the two projects:
+
+- Inertia.js is designed for SPAs (be they server- or client-rendered), while Mighty helps you build Multi-Page Apps (MPAs).
+- Inertia.js supports [a wide range of backends](https://inertiajs.com/community-adapters), while Mighty currently has official support for Laravel and Hono (for now!).
+- Given its MPA nature, Mighty is more deeply integrated with the backend, letting you use backend context (e.g. user info) on the Astro side.
+
+Depending on your use case, you might opt for Inertia.js to build an interaction-rich SPA app!
+
+You might want to consider Mighty if your app doesn't require fine-grained interactions everywhere, or if you prefer to avoid having a UI framework take over your entire page.
+
+<Aside>
+We plan to implement an SPA mode in Mighty, similar to what Inertia.js does!
+
+Mighty will eventually aim to be a drop-in replacement for Inertia.js, with deeper integration with the backend.
+
+</Aside>
 
 ## Laravel-specific solutions
 
 ### Blade
 
-WIP
-
-* Both can be used to build MPAs
-* Astro's DX and the JS ecosystem is unmatched when it comes to frontend
-* That being said, you can use Mighty with Blade and render Astro components inside of Blade pages!
-  * (TODO: support this on launch?)
-
+- Both can be used to build MPAs
+- Astro's DX and the JS ecosystem is unmatched when it comes to frontend
+- That being said, you can use Mighty with Blade and render Astro components inside of Blade pages!
+  - (TODO: support this on launch?)
 
 ### Livewire
 
-WIP
-
-* Livewire is for building backend-driven web apps (with SPA-like navigation support) while Mighty is for building MPAs
-* Astro's DX and the JS ecosystem is unmatched when it comes to frontend
-* Livewire is Blade, so you can use Mighty with Livewire
-* Livewire support inside of Astro components is planned
-
+- Livewire is for building backend-driven web apps (with SPA-like navigation support) while Mighty is for building MPAs
+- Astro's DX and the JS ecosystem is unmatched when it comes to frontend
+- Livewire is Blade, so you can use Mighty with Livewire
+- Livewire support inside of Astro components is planned
 
 ### Mingle.js
 
-WIP
-
-* You can use Mighty to do the same thing, now with more frameworks than just React and Vue
-* Mingle.js support for Livewire is great
-* Livewire support inside of Astro components is planned
-
+- You can use Mighty to do the same thing, now with more frameworks than just React and Vue
+- Mingle.js support for Livewire is great
+- Livewire support inside of Astro components is planned
 
 ### Hybridly
 
-TODO
+- Hybridly is similar to Inertia.js, but only for Laravel + Vue
+- Hybridly puts a big emphasis on end-to-end type safety
+- We plan to implement a similar level of type safety in Mighty
+
+### Fusion
+
+- Fusion was a library for combining Laravel and Vue code in the same Single-File Component file:
+
+```vue
+<php>
+  // Define a prop in PHP
+  $name = prop(Auth::user()->name);
+</php>
+
+<template>
+  <!-- Use it in Vue! -->
+  Hello {{ name }}!
+</template>
+```
+
+- We plan to implement frontend/backend colocation in Mighty
+- We might not support backend and frontend code in the same file, as it could lead to confusion
 
 ## Hono-specific solutions
 
 ### HonoX
 
-TODO
+- HonoX is a meta-framework for creating full-stack apps with Hono
+- HonoX has support for island hydration, similar to Astro
+  - It only officially supports for Hono's JSX runtime and React (with support for writing your own renderer)
+- Astro's DX and the JS ecosystem is unmatched when it comes to frontend
+- With Astro and Hono, Mighty aims to make the frontend DX even more delightful
