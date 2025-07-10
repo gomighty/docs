@@ -67,10 +67,22 @@ Mighty can also be used **_alongside_** Blade, with the abiity to render Astro c
 
 ### Livewire
 
-- Livewire is for building backend-driven web apps (with SPA-like navigation support) while Mighty is for building MPAs
-- Astro's DX and the JS ecosystem is unmatched when it comes to frontend
-- Livewire is Blade, so you can use Mighty with Livewire
-- Livewire support inside of Astro components is planned
+[Livewire](https://livewire.laravel.com/) is a full-stack framework for Laravel for building dynamic interfaces in PHP, with no or little JavaScript required.
+
+Livewire builds on top of Blade and Alpine.js to deliver a reactive, SPA-like experience, while Mighty is more geared for building MPAs.
+
+If your use case requires you to build in PHP as much as possible, Livewire is an excellent choice!
+
+Alternatively, if you prefer to leverage Astro's great developer experience, you might want to consider Mighty.
+
+Since Livewire uses Blade, you can use Mighty **_alongside_** Livewire, with the ability to render Astro components inside your Livewire components.
+
+<Aside>
+We plan to implement Livewire support inside Astro components!
+
+You will be able to use HTML directives (e.g. `wire:click`) as well as the `$wire` object to interact with Livewire components.
+
+</Aside>
 
 ### Mingle.js
 
