@@ -107,7 +107,7 @@ As a developer experience focused library, Mighty aims to provide a similar leve
 
 ### Fusion
 
-- Fusion was a library for combining Laravel and Vue code in the same Single-File Component file:
+[Fusion](https://github.com/fusion-php/fusion) was a project aiming to unite a Vue frontend and a Laravel backend in the same Single-File Component file.
 
 ```vue
 <php>
@@ -121,8 +121,18 @@ As a developer experience focused library, Mighty aims to provide a similar leve
 </template>
 ```
 
-- We plan to implement frontend/backend colocation in Mighty
-- We might not support backend and frontend code in the same file, as it could lead to confusion
+Fusion, while very appealing and ambitious, failed to gain traction and was put on hold for a variety of reasons:
+
+- Confusion regarding the execution model; some people thought Fusion executed PHP code **inside** of Vue, which was not the case
+- Lack of support for React and other frameworks
+- Lack of interest from the community; Fusion was built on top of Inertia.js, which meant it was not doing much more than what Inertia.js was doing
+
+Mighty is in a unique position to solve most or all of these concerns, with potential support for far more frameworks than Fusion ever did.
+
+This is our current stance on the matter:
+
+- We **will be implementing** file-based routing and some version of frontend-backend colocation in the future, with support for more frameworks than Fusion.
+- We **might not implement** same-file colocation support, as this might lead to confusion on where code actually executes
 
 ## Hono-specific solutions
 
