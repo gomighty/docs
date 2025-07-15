@@ -9,6 +9,21 @@ export default defineConfig({
     starlight({
       title: "Mighty",
       plugins: [starlightLinksValidator()],
+      head: [
+        {
+          tag: 'style',
+          content: `
+          @view-transition {
+            navigation: auto;
+          }
+
+          ::view-transition-old(root),
+          ::view-transition-new(root) {
+            animation: none;
+          }
+          `
+        }
+      ],
       social: [
         {
           icon: "github",
