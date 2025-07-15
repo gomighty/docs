@@ -37,10 +37,6 @@ export default defineConfig({
           autogenerate: { directory: "guides/hello-world" },
         },
         {
-          label: "Getting Started",
-          autogenerate: { directory: "guides/getting-started" },
-        },
-        {
           label: "Core Concepts",
           autogenerate: { directory: "guides/core-concepts" },
         },
