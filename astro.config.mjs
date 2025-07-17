@@ -10,7 +10,7 @@ export default defineConfig({
       title: "Mighty",
       plugins: [starlightLinksValidator()],
       logo: {
-        src: "@/assets/mighty.svg"
+        src: "@/assets/mighty.svg",
       },
       customCss: ["./src/styles/custom.css"],
       social: [
