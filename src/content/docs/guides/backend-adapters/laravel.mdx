@@ -1,5 +1,95 @@
 ---
 title: Laravel
+description: Install Mighty in your Laravel project, and learn how to render Astro components from your controllers or inside your Blade/Livewire views.
 sidebar:
   order: 2
 ---
+
+import { Aside, FileTree } from "@astrojs/starlight/components";
+
+The Laravel backend adapter integrates Mighty with your Laravel project, allowing you to render Astro components from your controllers or within your Blade/Livewire views.
+
+## Installation
+
+Refer to [the installation guide](/guides/hello-world/installation) to use Mighty in a new project, or an existing one.
+
+[A Laravel starter kit](/guides/hello-world/installation#laravel-starter-kit) for Mighty is also available.
+
+## Getting started
+
+### Project structure
+
+Once you are done setting up Mighty in your Laravel project, you should have the following structure in place:
+
+{/* prettier-ignore */}
+<FileTree>
+- resources
+  - astro
+    - components
+      - Welcome.astro
+    - layouts
+      - Layout.astro
+    - pages
+      - index.astro
+- astro.config.mjs
+</FileTree>
+
+### Start the development server
+
+To start the development server, run the following command:
+
+```shell
+php artisan mighty:dev
+```
+
+This will start a server that renders Astro components on-demand, with Hot Module Replacement (HMR) included for fast updates.
+
+### Start the production server
+
+Before starting the production server, first build optimized versions of your components:
+
+```shell
+php artisan mighty:build
+```
+
+You can then start the production server with the following command:
+
+```shell
+php artisan mighty:start
+```
+
+This will start a server that either returns static Astro components or renders them on-demand, depending on your rendering strategy.
+
+<Aside>
+You only need to run either the development server or the production server.
+
+When rendering Astro components from Laravel, Mighty will automatically detect which server is running, and serve the appropriate versions of your components.
+
+</Aside>
+
+### Render Astro components from controllers
+
+You can use Astro as a rendering engine for your application by returning Astro components from your controllers.
+
+```php
+namespace App\Http\Controllers;
+
+use App\Models\Post;
+use Mighty\MightyResponse;
+
+class PostController extends Controller
+{
+    public function index(): MightyResponse
+    {
+        return mighty('posts.index', [
+            'posts' => Post:all(),
+        ]);
+    }
+}
+```
+
+TODO: explain the `posts.index` syntax
+
+## Manual setup
+
+<Aside>Check back later for instructions on setting up Mighty manually!</Aside>
