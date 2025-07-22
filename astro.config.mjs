@@ -5,6 +5,9 @@ import starlightLinksValidator from "starlight-links-validator";
 
 // https://astro.build/config
 export default defineConfig({
+  experimental: {
+    clientPrerender: true,
+  },
   integrations: [
     starlight({
       title: "Mighty",
