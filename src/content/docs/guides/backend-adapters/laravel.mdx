@@ -30,9 +30,17 @@ Once you are done setting up Mighty in your Laravel project, you should have the
     - layouts
       - Layout.astro
     - pages
-      - index.astro
-- astro.config.mjs
+      - **index.astro**
+    - astro.config.mjs
+    - tsconfig.json
 </FileTree>
+
+<Aside type="caution">
+Mighty will **only** detect and render Astro components inside the `pages` directory.
+
+Components inside other directories (e.g. `components` and `layouts`) will not be detected, but can be used in components inside the `pages` directory.
+
+</Aside>
 
 ### Start the development server
 
@@ -71,7 +79,7 @@ When rendering Astro components from Laravel, Mighty will automatically detect w
 
 You can use Astro as a rendering engine for your application by returning Astro components from your controllers.
 
-```php
+```php title="app/Http/Controllers/PostController.php" {10-12}
 namespace App\Http\Controllers;
 
 use App\Models\Post;
@@ -88,7 +96,97 @@ class PostController extends Controller
 }
 ```
 
-TODO: explain the `posts.index` syntax
+This will render the following Astro component and pass it the `posts` prop:
+
+{/* prettier-ignore */}
+<FileTree>
+- resources
+  - astro
+    - pages
+      - posts
+        - **index.astro**
+</FileTree>
+
+You can then use the `posts` prop in your Astro component:
+
+```astro title="resources/astro/pages/posts/index.astro"
+---
+interface Props {
+  posts: { id: number; title: string; content: string }[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul>
+  {
+    posts.map((post) => (
+      <li>
+        <h2>{post.title}</h2>
+        <p>{post.content}</p>
+      </li>
+    ))
+  }
+</ul>
+```
+
+### Render Astro components inside Blade/Livewire views
+
+You can use Astro inside your Blade/Livewire views, with a syntax similar to rendering Livewire components.
+
+This can be very useful when you need to use UI frameworks for a specific use-case, e.g. React Flow for interactive diagrams.
+
+```blade title="resources/views/index.blade.php" ins={4}
+<mighty:posts.index :posts="$posts">
+<!-- Or, for short -->
+<mighty:posts.index :$posts>
+```
+
+This will render the following Astro component and pass it the `posts` prop:
+
+{/* prettier-ignore */}
+<FileTree>
+- resources
+  - astro
+    - pages
+      - posts
+        - **index.astro**
+</FileTree>
+
+You can then use the `posts` prop in your Astro component:
+
+```astro title="resources/astro/pages/posts/index.astro"
+---
+interface Props {
+  posts: { id: number; title: string; content: string }[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul>
+  {
+    posts.map((post) => (
+      <li>
+        <h2>{post.title}</h2>
+        <p>{post.content}</p>
+      </li>
+    ))
+  }
+</ul>
+```
+
+### Global properties
+
+TODO
+
+### Routing
+
+TODO, use wayfinder
+
+### Available methods
+
+TODO
 
 ## Manual setup
 
