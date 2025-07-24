@@ -79,7 +79,8 @@ When rendering Astro components from Laravel, Mighty will automatically detect w
 
 You can use Astro as a rendering engine for your application by returning Astro components from your controllers.
 
-```php title="app/Http/Controllers/PostController.php" {10-12}
+```php title="app/Http/Controllers/PostController.php" {11-13}
+<?php
 namespace App\Http\Controllers;
 
 use App\Models\Post;
@@ -176,17 +177,112 @@ const { posts } = Astro.props;
 </ul>
 ```
 
-### Global properties
+### Shared properties
 
-TODO
+You might want to pass properties to every Astro component, such as the current user or notification content.
+
+To do this, use the `share` method in one of your service providers (typically `AppServiceProvider`):
+
+```php title="AppServiceProvider.php"
+<?php
+
+// TODO
+class AppServiceProvider
+{
+    public function boot()
+    {
+        mighty()->share(fn () => [
+            'user' => auth()->user(),
+        ]);
+    }
+}
+```
+
+You can use shared properties in your Astro component by using the `shared` function:
+
+```astro title="resources/astro/layouts/Layout.astro"
+---
+import { shared } from "@mighty/laravel";
+
+const { user } = shared<{ user: { id: number; name: string } | null }>();
+---
+
+<html>
+  <head>
+    <!-- ... -->
+  </head>
+  <body>
+    <header>
+      {user !== null ? `Welcome back, ${name}!` : "Please log in!"}
+    </header>
+    <main><slot /></main>
+  </body>
+</html>
+```
+
+<Aside>
+  We plan to implement type safety for shared properties, similar to what
+  [Hybridly](https://hybridly.dev/) does.
+</Aside>
 
 ### Routing
 
-TODO, use wayfinder
+<Aside>
+We plan to have first-class support for routing inside Astro components.
 
-### Available methods
+In the meantime, you can use [Ziggy](https://github.com/tighten/ziggy) or [Laravel Wayfinder](https://github.com/laravel/wayfinder/) to retrieve your Laravel routes and controllers from Astro components.
 
-TODO
+</Aside>
+
+### Using the Astro context
+
+You can use Astro context properties, such as `Astro.request` and `Astro.params`, just as you would in a standard Astro project.
+
+```astro title="resources/astro/pages/posts/index.astro"
+---
+interface Props {
+  posts: { id: number; title: string; content: string }[];
+}
+
+const { posts } = Astro.props;
+
+const isBot =
+  Astro.request.headers.get("User-Agent")?.startsWith("Curl") ?? false;
+---
+
+{
+  isBot ? (
+    <p>Hey, no scraping!</p>
+  ) : (
+    <ul>
+      {posts.map((post) => (
+        <li>
+          <h2>{post.title}</h2>
+          <p>{post.content}</p>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+TODO: document limitations
+
+- All properties are read-only
+- Cannot use Astro.response to set status code, e.g. `Astro.response.status = 404` won't work
+
+### Laravel-specific utilities
+
+<Aside>
+This part is a work in progress!
+</Aside>
+
+- user('guard') for getting the current user
+- session('key') and errors('errorBag') to get session info
+  - Proper session support is planned
+- csrfToken() and `<CSRF />` for form submission
+  - Action support with CSRF is planned
+- `<Method put />` for form method spoofing
 
 ## Manual setup
 
