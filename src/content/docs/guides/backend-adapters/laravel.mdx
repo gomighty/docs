@@ -183,13 +183,27 @@ You might want to pass properties to every Astro component, such as the current 
 
 To do this, use the `share` method in one of your service providers (typically `AppServiceProvider`):
 
-```php title="AppServiceProvider.php"
+```php title="AppServiceProvider.php" {22-24}
 <?php
 
-// TODO
-class AppServiceProvider
+namespace App\Providers;
+
+use Illuminate\Support\Facades\View;
+
+class AppServiceProvider extends ServiceProvider
 {
-    public function boot()
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        // ...
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
     {
         mighty()->share(fn () => [
             'user' => auth()->user(),
@@ -200,24 +214,14 @@ class AppServiceProvider
 
 You can use shared properties in your Astro component by using the `shared` function:
 
-```astro title="resources/astro/layouts/Layout.astro"
+```astro
 ---
 import { shared } from "@mighty/laravel";
 
 const { user } = shared<{ user: { id: number; name: string } | null }>();
 ---
 
-<html>
-  <head>
-    <!-- ... -->
-  </head>
-  <body>
-    <header>
-      {user !== null ? `Welcome back, ${name}!` : "Please log in!"}
-    </header>
-    <main><slot /></main>
-  </body>
-</html>
+{user !== null ? `Welcome back, ${user.name}!` : "Please log in!"}
 ```
 
 <Aside>
@@ -234,11 +238,11 @@ In the meantime, you can use [Ziggy](https://github.com/tighten/ziggy) or [Larav
 
 </Aside>
 
-### Using the Astro context
+### Using the Astro render context
 
-You can use Astro context properties, such as `Astro.request` and `Astro.params`, just as you would in a standard Astro project.
+You can use Astro render context properties, such as `Astro.request`, just like you would in a standard Astro project.
 
-```astro title="resources/astro/pages/posts/index.astro"
+```astro
 ---
 interface Props {
   posts: { id: number; title: string; content: string }[];
@@ -247,7 +251,7 @@ interface Props {
 const { posts } = Astro.props;
 
 const isBot =
-  Astro.request.headers.get("User-Agent")?.startsWith("Curl") ?? false;
+  Astro.request.headers.get("User-Agent")?.startsWith("curl") ?? false;
 ---
 
 {
@@ -266,23 +270,96 @@ const isBot =
 }
 ```
 
-TODO: document limitations
-
-- All properties are read-only
-- Cannot use Astro.response to set status code, e.g. `Astro.response.status = 404` won't work
-
 ### Laravel-specific utilities
 
-<Aside>
-This part is a work in progress!
-</Aside>
+<Aside>This part is a work in progress!</Aside>
 
-- user('guard') for getting the current user
-- session('key') and errors('errorBag') to get session info
-  - Proper session support is planned
-- csrfToken() and `<CSRF />` for form submission
-  - Action support with CSRF is planned
-- `<Method put />` for form method spoofing
+In addition to the Astro render context, Mighty provides the following utilities:
+
+- A `user` function for getting the current user:
+
+  ```astro
+  ---
+  import { user } from "@mighty/laravel";
+
+  const user = user<{ id: number; name: string } | null>(); // or user('guard')
+  ---
+
+  {user !== null ? `Welcome back, ${user.name}!` : "Please log in!"}
+  ```
+
+- A `session` function to get session info:
+
+  ```astro
+  ---
+  import { session } from "@mighty/laravel";
+
+  const { numberOfProductsInCart } = session<{
+    numberOfProductsInCart: number;
+  }>();
+  // or
+  const numberOfProductsInCart = session<number>("numberOfProductsInCart");
+  ---
+
+  <p>You have {numberOfProductsInCart} products in your cart.</p>
+  ```
+
+  <Aside>First-class support for Astro sessions is on the roadmap!</Aside>
+
+- An `errors` function to get validation errors:
+
+  ```astro
+  ---
+  import { errors } from "@mighty/laravel";
+
+  const { email: emailError } = errors(); // or errors('errorBag')
+  ---
+
+  <form method="POST" action="/profile">
+    <label>
+      E-mail
+      <input required type="email" name="email" />
+    </label>
+    {emailError && <p>{emailError}</p>}
+  </form>
+  ```
+
+- A `csrfToken` function and a `<CSRF>` component for form submission:
+
+  ```astro
+  ---
+  import { csrfToken, CSRF } from "@mighty/laravel";
+  ---
+
+  <form method="POST" action="/profile">
+    <input type="hidden" name="_token" value={csrf_token()} />
+    <!-- or... -->
+    <CSRF />
+
+    <label>
+      E-mail
+      <input required type="email" name="email" />
+    </label>
+  </form>
+  ```
+
+- A `<Method>` component for form method spoofing:
+
+  ```astro
+  ---
+  import { CSRF, Method } from "@mighty/laravel";
+  ---
+
+  <form method="POST" action="/profile">
+    <CSRF />
+    <Method put />
+
+    <label>
+      E-mail
+      <input required type="email" name="email" />
+    </label>
+  </form>
+  ```
 
 ## Manual setup
 
