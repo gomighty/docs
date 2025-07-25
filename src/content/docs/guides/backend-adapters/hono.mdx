@@ -1,5 +1,59 @@
 ---
 title: Hono
+description: Install Mighty in your Hono project, and learn how to render Astro components from your Hono code.
 sidebar:
   order: 3
 ---
+
+import { Aside, FileTree } from "@astrojs/starlight/components";
+
+The Hono backend adapter integrates Mighty with your Hono project, allowing you to render Astro components from your Hono code.
+
+## Installation
+
+Refer to [the installation guide](/guides/hello-world/installation) to use Mighty in a new project, or an existing one.
+
+## Getting started
+
+### Project structure
+
+Once you are done setting up Mighty in your Laravel project, you should have the following structure in place:
+
+{/* prettier-ignore */}
+<FileTree>
+- astro
+  - components
+    - Welcome.astro
+  - layouts
+    - Layout.astro
+  - pages
+    - **index.astro**
+  - astro.config.mjs
+  - tsconfig.json
+</FileTree>
+
+<Aside type="caution">
+Mighty will **only** detect and render Astro components inside the `pages` directory.
+
+Components inside other directories (e.g. `components` and `layouts`) will not be detected, but can be used in components inside the `pages` directory.
+
+</Aside>
+
+### Run the Mighty server
+
+TODO
+
+```ts
+import { Hono } from "hono";
+import { runMightyServer } from "@mighty/hono";
+
+const app = new Hono();
+
+app.get("/", (c) => c.text("Hello Mighty!"));
+
+runMightyServer(app); // TODO: only do something if NODE_ENV=development?
+```
+
+## Manual setup
+
+<Aside>Check back later for instructions on setting up Mighty manually!</Aside>
