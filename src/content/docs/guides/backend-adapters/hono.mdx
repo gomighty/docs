@@ -6,6 +6,7 @@ sidebar:
 ---
 
 import { Aside, FileTree } from "@astrojs/starlight/components";
+import PackageManagerTabs from "@/components/PackageManagerTabs.astro";
 
 The Hono backend adapter integrates Mighty with your Hono project, allowing you to render Astro components from your Hono code.
 
@@ -39,20 +40,63 @@ Components inside other directories (e.g. `components` and `layouts`) will not b
 
 </Aside>
 
-### Run the Mighty server
+### Run the development server
 
-TODO
+You can run the development server by using the `startServer` function:
 
 ```ts
 import { Hono } from "hono";
-import { runMightyServer } from "@mighty/hono";
+import { startServer } from "@mighty/hono";
 
 const app = new Hono();
 
 app.get("/", (c) => c.text("Hello Mighty!"));
 
-runMightyServer(app); // TODO: only do something if NODE_ENV=development?
+startServer(app);
 ```
+
+This will start a server that renders Astro components on-demand, with Hot Module Replacement (HMR) included for fast updates.
+
+The server will only start **in development** (i.e. when `NODE_ENV=development`), and the `startServer` function will do nothing in production.
+
+<Aside>
+When using Hono, Mighty runs the development server in [**middleware mode**](https://vite.dev/config/server-options.html#server-middlewaremode).
+
+This means the development server is not standalone and will not take up a port.
+
+</Aside>
+
+### Build production assets
+
+Before using Mighty in production, first build optimized versions of your components:
+
+{/* prettier-ignore */}
+<PackageManagerTabs>
+  <Fragment slot="npm">
+  ```shell
+  # build assets with npm
+  npx @gomighty/hono build
+  ```
+  </Fragment>
+  <Fragment slot="pnpm">
+  ```shell
+  # build assets with pnpm
+  pnpx @gomighty/hono build
+  ```
+  </Fragment>
+  <Fragment slot="bun">
+  ```shell
+  # build assets with bun
+  bunx @gomighty/hono build
+  ```
+  </Fragment>
+</PackageManagerTabs>
+
+Mighty will now use render optimized Astro components either statically or on-demand, depending on your rendering strategy.
+
+<Aside>
+  When using Hono, you do not need to run a separate production server.
+</Aside>
 
 ## Manual setup
 
