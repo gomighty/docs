@@ -111,7 +111,7 @@ const app = new Hono();
 
 app.get("/", async (c) => {
   const posts = await db.getPosts();
-  return render("posts.index", { posts });
+  return render(c, "posts.index", { posts });
 });
 
 startServer(app);
@@ -165,7 +165,7 @@ const app = new Hono();
 
 app.get("/", async (c) => {
   const posts = await db.getPosts();
-  return render("posts.index", { posts });
+  return render(c, "posts.index", { posts });
 });
 
 startServer(app);
