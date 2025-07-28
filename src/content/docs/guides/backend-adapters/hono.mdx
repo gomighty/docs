@@ -44,13 +44,13 @@ Components inside other directories (e.g. `components` and `layouts`) will not b
 
 You can run the development server by using the `startServer` function:
 
-```ts
+```ts {8}
 import { Hono } from "hono";
 import { startServer } from "@gomighty/hono";
 
 const app = new Hono();
 
-app.get("/", (c) => c.text("Hello Mighty!"));
+// ...
 
 startServer(app);
 ```
@@ -97,6 +97,70 @@ Mighty will now use render optimized Astro components either statically or on-de
 <Aside>
   When using Hono, you do not need to run a separate production server.
 </Aside>
+
+### Render Astro components from Hono code
+
+You can use Astro as a rendering engine for your application by returning Astro components from your Hono code.
+
+```ts {7-10}
+import { Hono } from "hono";
+import { db } from "./lib/db";
+import { startServer, render } from "@gomighty/hono";
+
+const app = new Hono();
+
+app.get("/", async (c) => {
+  const posts = await db.getPosts();
+  return render("posts.index", { posts });
+});
+
+startServer(app);
+```
+
+This will render the following Astro component and pass it the `posts` prop:
+
+{/* prettier-ignore */}
+<FileTree>
+- astro
+  - pages
+    - posts
+      - **index.astro**
+</FileTree>
+
+You can then use the `posts` prop in your Astro component:
+
+```astro title="resources/astro/pages/posts/index.astro"
+---
+interface Props {
+  posts: { id: number; title: string; content: string }[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul>
+  {
+    posts.map((post) => (
+      <li>
+        <h2>{post.title}</h2>
+        <p>{post.content}</p>
+      </li>
+    ))
+  }
+</ul>
+```
+
+### Shared properties
+
+TODO
+
+### Using the Astro render context
+
+TODO
+
+### Using the Hono context
+
+TODO
 
 ## Manual setup
 
