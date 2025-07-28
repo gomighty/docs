@@ -272,7 +272,9 @@ const isBot =
 
 ### Laravel-specific utilities
 
-<Aside>This part is a work in progress, as we add more and more utilities!</Aside>
+<Aside>
+  This part is a work in progress, as we add more and more utilities!
+</Aside>
 
 In addition to the Astro render context, Mighty provides the following utilities:
 
@@ -285,7 +287,11 @@ In addition to the Astro render context, Mighty provides the following utilities
   const currentUser = user<{ id: number; name: string } | null>(); // or user('guard')
   ---
 
-  {currentUser !== null ? `Welcome back, ${currentUser.name}!` : "Please log in!"}
+  {
+    currentUser !== null
+      ? `Welcome back, ${currentUser.name}!`
+      : "Please log in!"
+  }
   ```
 
 - A `session` function to get session info:
