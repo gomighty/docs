@@ -216,7 +216,7 @@ You can use shared properties in your Astro component by using the `shared` func
 
 ```astro
 ---
-import { shared } from "@mighty/laravel";
+import { shared } from "@gomighty/laravel";
 
 const { user } = shared<{ user: { id: number; name: string } | null }>();
 ---
@@ -280,7 +280,7 @@ In addition to the Astro render context, Mighty provides the following utilities
 
   ```astro
   ---
-  import { user } from "@mighty/laravel";
+  import { user } from "@gomighty/laravel";
 
   const currentUser = user<{ id: number; name: string } | null>(); // or user('guard')
   ---
@@ -292,7 +292,7 @@ In addition to the Astro render context, Mighty provides the following utilities
 
   ```astro
   ---
-  import { session } from "@mighty/laravel";
+  import { session } from "@gomighty/laravel";
 
   const { numberOfProductsInCart } = session<{
     numberOfProductsInCart: number;
@@ -310,7 +310,7 @@ In addition to the Astro render context, Mighty provides the following utilities
 
   ```astro
   ---
-  import { errors } from "@mighty/laravel";
+  import { errors } from "@gomighty/laravel";
 
   const { email: emailError } = errors(); // or errors('errorBag')
   ---
@@ -328,7 +328,7 @@ In addition to the Astro render context, Mighty provides the following utilities
 
   ```astro
   ---
-  import { csrfToken, CSRF } from "@mighty/laravel";
+  import { csrfToken, CSRF } from "@gomighty/laravel";
   ---
 
   <form method="POST" action="/profile">
@@ -347,7 +347,7 @@ In addition to the Astro render context, Mighty provides the following utilities
 
   ```astro
   ---
-  import { CSRF, Method } from "@mighty/laravel";
+  import { CSRF, Method } from "@gomighty/laravel";
   ---
 
   <form method="POST" action="/profile">
