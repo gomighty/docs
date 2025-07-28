@@ -152,15 +152,83 @@ const { posts } = Astro.props;
 
 ### Shared properties
 
-TODO
+You might want to pass properties to every Astro component, such as the current user or notification content.
+
+To do this, use the `share` function in your Hono code:
+
+```ts
+import { Hono } from "hono";
+import { db } from "./lib/db";
+import { startServer, render, share } from "@gomighty/hono";
+
+const app = new Hono();
+
+app.get("/", async (c) => {
+  const posts = await db.getPosts();
+  return render("posts.index", { posts });
+});
+
+startServer(app);
+
+share(app, async (c) => {
+  return {
+    user: db.getUser(),
+  };
+});
+```
+
+You can use shared properties in your Astro component by using the `shared` function:
+
+```astro
+---
+import { shared } from "@gomighty/hono";
+
+const { user } = shared<{ user: { id: number; name: string } | undefined }>();
+---
+
+{user ? `Welcome back, ${user.name}!` : "Please log in!"}
+```
 
 ### Using the Astro render context
 
-TODO
+You can use Astro render context properties, such as `Astro.request`, just like you would in a standard Astro project.
 
-### Using the Hono context
+```astro
+---
+interface Props {
+  posts: { id: number; title: string; content: string }[];
+}
 
-TODO
+const { posts } = Astro.props;
+
+const isBot =
+  Astro.request.headers.get("User-Agent")?.startsWith("curl") ?? false;
+---
+
+{
+  isBot ? (
+    <p>Hey, no scraping!</p>
+  ) : (
+    <ul>
+      {posts.map((post) => (
+        <li>
+          <h2>{post.title}</h2>
+          <p>{post.content}</p>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+### Hono-specific utilities
+
+<Aside>
+Do you need any Hono-specific utilities?
+
+Let us know by opening an issue or submitting a pull request!
+
+</Aside>
 
 ## Manual setup
 
