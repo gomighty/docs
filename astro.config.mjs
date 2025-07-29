@@ -37,10 +37,6 @@ export default defineConfig({
           autogenerate: { directory: "guides/backend-adapters" },
         },
         {
-          label: "Advanced Usage",
-          autogenerate: { directory: "guides/advanced-usage" },
-        },
-        {
           label: "Extra topics",
           autogenerate: { directory: "guides/extra-topics" },
         },
