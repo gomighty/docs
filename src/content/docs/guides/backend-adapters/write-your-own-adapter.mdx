@@ -3,3 +3,15 @@ title: Write your own adapter
 sidebar:
   order: 4
 ---
+
+While Mighty provides backend adapters for Laravel and Hono, you might want to use another backend.
+
+Mighty provides a Node.js-based adapter interface, making it easy to add support for your favorite backend.
+
+## Backend adapter building pieces
+
+A backend adapter consists of the following building pieces:
+
+- A way of starting Mighty's development and production servers
+- An interface for rendering Astro components from your backend code (usually written in your backend's programming language)
+- Additional helper functions and types to improve developer experience (optional, usually written in JS/TS)
