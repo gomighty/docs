@@ -23,6 +23,17 @@ export default defineConfig({
           href: "https://github.com/withastro/starlight",
         },
       ],
+      head: [
+        {
+          tag: "link",
+          attrs: {
+            rel: "icon",
+            type: "image/png",
+            href: "/favicon-96x96.png",
+            sizes: "96x96",
+          },
+        },
+      ],
       sidebar: [
         {
           label: "Hello, World!",
