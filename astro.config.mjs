@@ -15,6 +15,10 @@ export default defineConfig({
       logo: {
         src: "@/assets/mighty.svg",
       },
+      components: {
+        SiteTitle: "@/components/starlight/SiteTitle.astro",
+        Hero: "@/components/starlight/Hero.astro",
+      },
       customCss: ["./src/styles/custom.css"],
       social: [
         {
