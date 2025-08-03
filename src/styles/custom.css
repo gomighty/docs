@@ -19,7 +19,8 @@
   transform-origin: center;
 }
 
-.mighty-logo:hover svg path {
+.mighty-logo:hover svg path,
+.site-title:hover .mighty-logo svg path {
   transform: rotateY(540deg);
 }
 
