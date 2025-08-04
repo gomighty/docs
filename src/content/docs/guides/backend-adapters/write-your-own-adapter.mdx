@@ -4,6 +4,10 @@ sidebar:
   order: 4
 ---
 
+import { Aside } from "@astrojs/starlight/components";
+
+<Aside>This is a work in progress!</Aside>
+
 While Mighty provides backend adapters for Laravel and Hono, you might want to use another backend.
 
 Mighty provides a Node.js-based adapter interface, making it easy to add support for your favorite backend.
@@ -12,6 +16,56 @@ Mighty provides a Node.js-based adapter interface, making it easy to add support
 
 A backend adapter consists of the following building pieces:
 
-- A way of starting Mighty's development and production servers
+- A way of starting Mighty's development and production servers (usually calling Mighty's helper functions)
 - An interface for rendering Astro components from your backend code (usually written in your backend's programming language)
 - Additional helper functions and types to improve developer experience (optional, usually written in JS/TS)
+
+A backend adapter is considered "usable" if it implements the first two building pieces.
+
+<Aside>
+Providing helper functions is recommended, but optional!
+
+Focusing first on making the backend adapter usable is a viable strategy.
+
+</Aside>
+
+## Start Mighty's development and production servers
+
+Mighty provides helper functions to start the development server, build assets and start the production server:
+
+```ts
+import { dev, build, start } from "@gomighty/core";
+
+// Start the development server
+await dev();
+
+// Build assets
+await build();
+
+// Start the production server
+await start();
+```
+
+All helper functions accept an object with the following options:
+
+```ts
+export type MightyServerOptions = {
+  astro?: AstroUserConfig;
+  hooks?: {
+    "mighty:server:start"?: (options: {
+      address: AddressInfo;
+    }) => void | Promise<void>;
+  };
+};
+```
+
+After starting the development/production server, you should communicate the server host and port to your backend.
+
+To do that, you can either:
+
+- Set the host and port in the Astro user config (`astro`), and allow it to be set from your backend (e.g. through config files)
+- Use the `"mighty:server:start"` hook to get the AddressInfo object, and communicate it back to your backend
+
+## Render Astro components from your backend code
+
+TODO
