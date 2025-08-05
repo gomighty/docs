@@ -3,7 +3,7 @@ import MightyLogo from "@/assets/mighty.svg";
 import config from "virtual:starlight/user-config";
 const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 
-const anchorHref = Astro.url.pathname === "/" ? "#" : siteTitleHref;
+const anchorHref = Astro.url.pathname === "/" ? "/#" : siteTitleHref;
 ---
 
 <a href={anchorHref} class="site-title sl-flex">
@@ -42,7 +42,6 @@ const anchorHref = Astro.url.pathname === "/" ? "#" : siteTitleHref;
   .site-title-logo svg path {
     transition: transform 0.5s ease;
     transform-origin: center;
-    view-transition-name: site-title-logo;
   }
 
   .site-title[data-hover="true"] .site-title-logo svg path {
