@@ -8,6 +8,7 @@ export default defineConfig({
   experimental: {
     clientPrerender: true,
   },
+  site: "https://gomighty.github.io",
   integrations: [
     starlight({
       title: "Mighty",
