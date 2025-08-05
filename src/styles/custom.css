@@ -14,25 +14,6 @@
       calc(100% + 20rem) / 60rem 30rem;
 }
 
-.mighty-logo svg path {
-  transition: transform 0.5s ease;
-  transform-origin: center;
-}
-
-.mighty-logo:hover svg path,
-.site-title:hover .mighty-logo svg path {
-  transform: rotateY(540deg);
-}
-
-@keyframes spin {
-  0% {
-    transform: rotateY(0deg);
-  }
-  100% {
-    transform: rotateY(540deg);
-  }
-}
-
 :root[data-theme="dark"] {
   --overlay-color: hsla(var(--accent-color), 0.5);
 }

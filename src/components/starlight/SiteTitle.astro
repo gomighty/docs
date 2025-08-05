@@ -2,10 +2,12 @@
 import MightyLogo from "@/assets/mighty.svg";
 import config from "virtual:starlight/user-config";
 const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
+
+const anchorHref = Astro.url.pathname === "/" ? "#" : siteTitleHref;
 ---
 
-<a href={siteTitleHref} class="site-title sl-flex">
-  <MightyLogo class="mighty-logo" />
+<a href={anchorHref} class="site-title sl-flex">
+  <MightyLogo class="site-title-logo" />
   <span class:list={{ "sr-only": config.logo?.replacesTitle }} translate="no">
     {siteTitle}
   </span>
@@ -35,3 +37,59 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
     }
   }
 </style>
+
+<style is:global>
+  .site-title-logo svg path {
+    transition: transform 0.5s ease;
+    transform-origin: center;
+    view-transition-name: site-title-logo;
+  }
+
+  .site-title[data-hover="true"] .site-title-logo svg path {
+    transform: rotateY(540deg);
+  }
+
+  .site-title-rotate-after-view-transition svg path {
+    transition: none !important;
+    transform: rotateY(540deg);
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  import { hover } from "motion";
+
+  const CLASS_TO_ADD_AFTER_VIEW_TRANSITION =
+    "site-title-rotate-after-view-transition";
+
+  let isHovering = false;
+
+  hover(".site-title", (el) => {
+    isHovering = true;
+    el.setAttribute("data-hover", "true");
+    return () => {
+      isHovering = false;
+      el.classList.remove(CLASS_TO_ADD_AFTER_VIEW_TRANSITION);
+      el.removeAttribute("data-hover");
+    };
+  });
+
+  window.addEventListener("pageswap", (event) => {
+    // @ts-expect-error viewTransition is not typed
+    if (!event.viewTransition) return;
+
+    sessionStorage.setItem("site-title-hover", isHovering ? "true" : "false");
+  });
+
+  window.addEventListener("pagereveal", (event) => {
+    // @ts-expect-error viewTransition is not typed
+    if (!event.viewTransition) return;
+
+    if (sessionStorage.getItem("site-title-hover") === "true") {
+      document
+        .querySelector(".site-title")
+        ?.classList.add(CLASS_TO_ADD_AFTER_VIEW_TRANSITION);
+    }
+    sessionStorage.removeItem("site-title-logo-hover");
+  });
+</script>
