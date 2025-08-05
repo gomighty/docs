@@ -24,7 +24,7 @@ export default defineConfig({
         {
           icon: "github",
           label: "GitHub",
-          href: "https://github.com/gomighty/core",
+          href: "https://github.com/gomighty/mighty",
         },
       ],
       head: [
