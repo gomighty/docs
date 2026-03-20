@@ -42,22 +42,19 @@ Components inside other directories (e.g. `components` and `layouts`) will not b
 
 ### Run the development server
 
-You can run the development server by using the `startServer` function:
+You can run the development server by using the `mighty` middleware:
 
-```ts {8}
+```ts {6}
 import { Hono } from "hono";
-import { startServer } from "@gomighty/hono";
+import { mighty } from "@gomighty/hono";
 
-const app = new Hono();
-
-// ...
-
-startServer(app);
+// Chain .use(mighty()) for type safety
+const app = new Hono().use(mighty());
 ```
 
 This will start a server that renders Astro components on-demand, with Hot Module Replacement (HMR) included for fast updates.
 
-The server will only start **in development** (i.e. when `NODE_ENV=development`), and the `startServer` function will do nothing in production.
+The `mighty()` middleware auto-detects the environment: in development it starts the dev server with HMR, and in production it sets up rendering of pre-built components.
 
 <Aside>
 When using Hono, Mighty runs the development server in [**middleware mode**](https://vite.dev/config/server-options.html#server-middlewaremode).
@@ -75,19 +72,19 @@ Before using Mighty in production, first build optimized versions of your compon
   <Fragment slot="npm">
   ```shell
   # build assets with npm
-  npx @gomighty/hono build
+  npx mighty-hono build
   ```
   </Fragment>
   <Fragment slot="pnpm">
   ```shell
   # build assets with pnpm
-  pnpx @gomighty/hono build
+  pnpx mighty-hono build
   ```
   </Fragment>
   <Fragment slot="bun">
   ```shell
   # build assets with bun
-  bunx @gomighty/hono build
+  bunx mighty-hono build
   ```
   </Fragment>
 </PackageManagerTabs>
@@ -102,19 +99,18 @@ Mighty will now use render optimized Astro components either statically or on-de
 
 You can use Astro as a rendering engine for your application by returning Astro components from your Hono code.
 
-```ts {7-10}
+```ts {8-11}
 import { Hono } from "hono";
 import { db } from "./lib/db";
-import { startServer, render } from "@gomighty/hono";
+import { mighty } from "@gomighty/hono";
 
-const app = new Hono();
+// Chain .use(mighty()) for type safety
+const app = new Hono().use(mighty());
 
 app.get("/", async (c) => {
   const posts = await db.getPosts();
-  return render(c, "posts.index", { posts });
+  return c.render({ component: "posts.index", props: { posts } });
 });
-
-startServer(app);
 ```
 
 This will render the following Astro component and pass it the `posts` prop:
@@ -154,26 +150,24 @@ const { posts } = Astro.props;
 
 You might want to pass properties to every Astro component, such as the current user or notification content.
 
-To do this, use the `share` function in your Hono code:
+To do this, use `c.var.share()` in your Hono code:
 
 ```ts
 import { Hono } from "hono";
 import { db } from "./lib/db";
-import { startServer, render, share } from "@gomighty/hono";
+import { mighty } from "@gomighty/hono";
 
-const app = new Hono();
+// Chain .use(mighty()) for type safety
+const app = new Hono().use(mighty());
+
+app.use(async (c, next) => {
+  c.var.share({ user: await db.getUser() });
+  await next();
+});
 
 app.get("/", async (c) => {
   const posts = await db.getPosts();
-  return render(c, "posts.index", { posts });
-});
-
-startServer(app);
-
-share(app, async (c) => {
-  return {
-    user: db.getUser(),
-  };
+  return c.render({ component: "posts.index", props: { posts } });
 });
 ```
 
