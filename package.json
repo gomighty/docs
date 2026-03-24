@@ -3,18 +3,21 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "bunx --bun astro dev",
-    "start": "bunx --bun astro dev",
-    "build": "bunx --bun astro build",
-    "preview": "bunx --bun astro preview",
-    "astro": "bunx --bun astro"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "engines": {
+    "node": "22.x"
   },
   "dependencies": {
-    "@astrojs/starlight": "0.35.1",
-    "astro": "5.12.3",
+    "@astrojs/starlight": "^0.38.2",
+    "astro": "^6",
     "motion": "^12.23.12",
     "sharp": "^0.34.2",
-    "starlight-links-validator": "^0.17.0"
+    "starlight-links-validator": "^0.20.1"
   },
   "devDependencies": {
     "prettier": "3.6.2",
