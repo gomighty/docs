@@ -72,12 +72,7 @@ All helper functions accept an object with the following options:
 
 ```ts
 export type MightyServerOptions = {
-  config?: AstroUserConfig;
-  hooks?: {
-    "mighty:server:start"?: (options: {
-      address: AddressInfo;
-    }) => void | Promise<void>;
-  };
+  config?: AstroInlineConfig;
 };
 ```
 
@@ -96,40 +91,29 @@ If there is a configuration value conflict, Mighty's configuration overrides the
 
 </Aside>
 
-### `hooks` option
-
-A series of events to hook into the Mighty pipeline.
-
-Use the `mighty:server:start` hook to get the Mighty server's address.
-
-This is useful when you want to send the server's host and port to your backend.
-
 ## Render Astro components from your backend code
 
-We assume your backend has knowledge about Mighty's server host and port (e.g. `http://localhost:4321`).
-
-You can now call the server on the `/render` endpoint to render Astro components:
+The `dev()` and `start()` functions return a `render` function that you can use to render Astro components programmatically:
 
 ```ts
-const res = await fetch("http://localhost:4321", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    component: "posts.index",
-    props: { id: 1 },
-    context: { backendVersion: "v1.2.0" },
-  }),
-});
-const astroComponentBody = await res.text();
+// Development
+const { render, viteMiddleware, stop } = await dev({ config: { root: "./astro" } });
+const result = await render({ component: "posts.index", props: { id: 1 }, context: {}, address: "..." });
+
+// Production
+const { render } = await start({ config: { root: "./astro" } });
+const result = await render({ component: "posts.index", props: { id: 1 }, context: {} });
 ```
 
-The `/render` endpoint accepts a JSON body with the following options:
+The `render` function accepts a `MightyRenderRequest` object:
 
 ```ts
 export type MightyRenderRequest = {
   component: string;
   props?: Record<string, unknown>;
   context?: Record<string, unknown>;
+  /** @default true */
+  partial?: boolean;
 };
 ```
 
